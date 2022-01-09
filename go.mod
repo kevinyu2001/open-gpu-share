@@ -3,9 +3,11 @@ module github.com/alibaba/open-gpu-share
 go 1.16
 
 require (
-	k8s.io/api v0.21.0
-	k8s.io/apimachinery v0.21.0 // indirect
+	k8s.io/api v0.23.1
+	k8s.io/apimachinery v0.23.1
+	k8s.io/client-go v0.21.0
 	k8s.io/klog/v2 v2.9.0 // indirect
+	k8s.io/kube-scheduler v0.23.1
 )
 
 replace (
@@ -26,10 +28,10 @@ replace (
 	k8s.io/kube-aggregator => k8s.io/kube-aggregator v0.20.5
 	k8s.io/kube-controller-manager => k8s.io/kube-controller-manager v0.20.5
 	k8s.io/kube-proxy => k8s.io/kube-proxy v0.20.5
-	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.20.5
 	k8s.io/kubectl => k8s.io/kubectl v0.20.5
 	k8s.io/kubelet => k8s.io/kubelet v0.20.5
 	k8s.io/kubernetes => k8s.io/kubernetes v1.20.5
+	k8s.io/kubernetes/pkg/scheduler/api => k8s.io/kubernetes/pkg/scheduler/api v1.20.5
 	k8s.io/legacy-cloud-providers => k8s.io/legacy-cloud-providers v0.20.5
 	k8s.io/metrics => k8s.io/metrics v0.20.5
 	k8s.io/mount-utils => k8s.io/mount-utils v0.21.0-beta.0
