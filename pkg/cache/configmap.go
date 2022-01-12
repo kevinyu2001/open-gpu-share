@@ -17,6 +17,10 @@ var (
 )
 
 func getConfigMap(name string) *v1.ConfigMap {
+	if ConfigMapLister == nil {
+		return nil
+	}
+
 	configMap, err := ConfigMapLister.ConfigMaps(metav1.NamespaceSystem).Get(name)
 
 	// If we can't get the configmap just return nil. The resync will eventually

@@ -39,7 +39,7 @@ func (d *DeviceInfo) GetTotalGPUMemory() uint {
 }
 
 func (d *DeviceInfo) GetUsedGPUMemory() (gpuMem uint) {
-	log.Printf("debug: GetUsedGPUMemory() podMap %v, and its address is %p", d.podMap, d)
+	//log.Printf("debug: GetUsedGPUMemory() podMap %v, and its address is %p", d.podMap, d)
 	d.rwmu.RLock()
 	defer d.rwmu.RUnlock()
 	for _, pod := range d.podMap {
@@ -54,27 +54,17 @@ func (d *DeviceInfo) GetUsedGPUMemory() (gpuMem uint) {
 }
 
 func (d *DeviceInfo) addPod(pod *v1.Pod) {
-	log.Printf("debug: dev.addPod() Pod %s in ns %s with the GPU ID %d will be added to device map",
-		pod.Name,
-		pod.Namespace,
-		d.idx)
+	//log.Printf("debug: dev.addPod() Pod %s in ns %s with the GPU ID %d will be added to device map", pod.Name, pod.Namespace, d.idx)
 	d.rwmu.Lock()
 	defer d.rwmu.Unlock()
 	d.podMap[pod.UID] = pod
-	log.Printf("debug: dev.addPod() after updated is %v, and its address is %p",
-		d.podMap,
-		d)
+	//log.Printf("debug: dev.addPod() after updated is %v, and its address is %p", d.podMap, d)
 }
 
 func (d *DeviceInfo) removePod(pod *v1.Pod) {
-	log.Printf("debug: dev.removePod() Pod %s in ns %s with the GPU ID %d will be removed from device map",
-		pod.Name,
-		pod.Namespace,
-		d.idx)
+	//log.Printf("debug: dev.removePod() Pod %s in ns %s with the GPU ID %d will be removed from device map", pod.Name, pod.Namespace, d.idx)
 	d.rwmu.Lock()
 	defer d.rwmu.Unlock()
 	delete(d.podMap, pod.UID)
-	log.Printf("debug: dev.removePod() after updated is %v, and its address is %p",
-		d.podMap,
-		d)
+	//log.Printf("debug: dev.removePod() after updated is %v, and its address is %p", d.podMap, d)
 }

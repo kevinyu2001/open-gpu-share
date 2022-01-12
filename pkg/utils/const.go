@@ -5,9 +5,9 @@ const (
 	CountName    = "alibabacloud.com/gpu-count"
 
 	EnvNVGPU              = "NVIDIA_VISIBLE_DEVICES"
-	EnvResourceIndex      = "ALIYUN_COM_GPU_MEM_IDX"
-	EnvResourceByPod      = "ALIYUN_COM_GPU_MEM_POD"
-	EnvResourceByDev      = "ALIYUN_COM_GPU_MEM_DEV"
-	EnvAssignedFlag       = "ALIYUN_COM_GPU_MEM_ASSIGNED"
-	EnvResourceAssumeTime = "ALIYUN_COM_GPU_MEM_ASSUME_TIME"
+	EnvResourceIndex      = "ALIBABACLOUD_COM_GPU_MEM_IDX"
+	EnvResourceByPod      = "ALIBABACLOUD_COM_GPU_MEM_POD"
+	EnvResourceByDev      = "ALIBABACLOUD_COM_GPU_MEM_DEV"
+	EnvAssignedFlag       = "ALIBABACLOUD_COM_GPU_MEM_ASSIGNED"
+	EnvResourceAssumeTime = "ALIBABACLOUD_COM_GPU_MEM_ASSUME_TIME"
 )
