@@ -278,7 +278,7 @@ func (n *GpuNodeInfo) AllocateGpuId(pod *v1.Pod) (candDevId string, found bool) 
 		for devId < len(n.devs) && reqGpuId < int(reqGpuNum) { // two pointers
 			if idleGpuMem, ok := availableGpus[devId]; ok && idleGpuMem >= reqGpuMem {
 				candDevIdList = append(candDevIdList, devId)
-				availableGpus[devId] = idleGpuMem - reqGpuNum
+				availableGpus[devId] = idleGpuMem - reqGpuMem
 				reqGpuId++
 			} else {
 				devId++
