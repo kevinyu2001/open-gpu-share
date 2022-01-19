@@ -13,22 +13,22 @@ type Result struct {
 
 type Node struct {
 	Name     string    `json:"name"`
-	TotalGPU uint      `json:"totalGPU"`
-	UsedGPU  uint      `json:"usedGPU"`
+	TotalGpu int64     `json:"totalGpu"`
+	UsedGpu  int64     `json:"usedGpu"`
 	Devices  []*Device `json:"devs"`
 }
 
 type Device struct {
 	ID       int    `json:"id"`
-	TotalGPU uint   `json:"totalGPU"`
-	UsedGPU  uint   `json:"usedGPU"`
+	TotalGpu int64  `json:"totalGpu"`
+	UsedGpu  int64  `json:"usedGpu"`
 	Pods     []*Pod `json:"pods"`
 }
 
 type Pod struct {
 	Name      string `json:"name"`
 	Namespace string `json:"namespace"`
-	UsedGPU   int    `json:"usedGPU"`
+	UsedGpu   int    `json:"usedGpu"`
 }
 
 type Inspect struct {

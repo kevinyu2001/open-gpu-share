@@ -30,7 +30,7 @@ func (b Bind) Handler(args kubeschedv1.ExtenderBindingArgs) *kubeschedv1.Extende
 	}
 }
 
-func NewGPUShareBind(clientset *kubernetes.Clientset, c *cache.SchedulerCache) *Bind {
+func NewGpuShareBind(clientset *kubernetes.Clientset, c *cache.SchedulerCache) *Bind {
 	return &Bind{
 		Name: "gpusharingbinding",
 		Func: func(name string, namespace string, podUID types.UID, node string, c *cache.SchedulerCache) error {

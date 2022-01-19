@@ -11,7 +11,7 @@ import (
 	kubeschedv1 "k8s.io/kube-scheduler/extender/v1"
 )
 
-func NewGPUsharePredicate(clientset *kubernetes.Clientset, c *cache.SchedulerCache) *Predicate {
+func NewGpuSharePredicate(clientset *kubernetes.Clientset, c *cache.SchedulerCache) *Predicate {
 	return &Predicate{
 		Name: "gpusharingfilter",
 		Func: func(pod *v1.Pod, nodeName string, c *cache.SchedulerCache) (bool, error) {
@@ -21,7 +21,7 @@ func NewGPUsharePredicate(clientset *kubernetes.Clientset, c *cache.SchedulerCac
 				return false, err
 			}
 
-			if !utils.IsGPUSharingNode(nodeInfo.GetNode()) {
+			if !utils.IsGpuSharingNode(nodeInfo.GetNode()) {
 				return false, fmt.Errorf("The node %s is not for GPU share, need skip", nodeName)
 			}
 

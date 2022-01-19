@@ -32,42 +32,42 @@ func (in Inspect) Handler(name string) *Result {
 func buildNode(info *cache.GpuNodeInfo) *Node {
 	devInfos := info.GetDevs()
 	devs := []*Device{}
-	var usedGPU uint
+	var usedGpu int64
 
 	for i, devInfo := range devInfos {
 		dev := &Device{
 			ID:       i,
-			TotalGPU: devInfo.GetTotalGPUMemory(),
-			UsedGPU:  devInfo.GetUsedGPUMemory(),
+			TotalGpu: devInfo.GetTotalGpuMemory(),
+			UsedGpu:  devInfo.GetUsedGpuMemory(),
 		}
 
 		podInfos := devInfo.GetPods()
-		pods := []*Pod{}
+		var pods []*Pod
 		for _, podInfo := range podInfos {
 			if utils.AssignedNonTerminatedPod(podInfo) {
 				pod := &Pod{
 					Namespace: podInfo.Namespace,
 					Name:      podInfo.Name,
-					UsedGPU:   utils.GetGPUMemoryFromPodResource(podInfo),
+					UsedGpu:   utils.GetGpuMemoryFromPodResource(podInfo),
 				}
 				pods = append(pods, pod)
 			}
 		}
 		dev.Pods = pods
 		devs = append(devs, dev)
-		usedGPU += devInfo.GetUsedGPUMemory()
+		usedGpu += devInfo.GetUsedGpuMemory()
 	}
 
 	return &Node{
 		Name:     info.GetName(),
-		TotalGPU: uint(info.GetTotalGPUMemory()),
-		UsedGPU:  usedGPU,
+		TotalGpu: info.GetTotalGpuMemory(),
+		UsedGpu:  usedGpu,
 		Devices:  devs,
 	}
 
 }
 
-func NewGPUShareInspect(c *cache.SchedulerCache) *Inspect {
+func NewGpuShareInspect(c *cache.SchedulerCache) *Inspect {
 	return &Inspect{
 		Name:  "gpushareinspect",
 		cache: c,
