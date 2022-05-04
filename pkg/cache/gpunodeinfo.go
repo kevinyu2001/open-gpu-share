@@ -151,13 +151,11 @@ func (n *GpuNodeInfo) Assume(pod *v1.Pod) (allocatable bool) {
 	//log.Printf("debug: AvailableGPUs: %v in node %s", availableGpus, n.name)
 
 	if len(availableGpus) > 0 {
-		for devId := 0; devId < len(n.devs); devId++ {
-			if availableGpu, ok := availableGpus[devId]; ok {
-				if availableGpu >= reqGpuMem {
-					if reqGpuNum -= 1; reqGpuNum <= 0 {
-						allocatable = true
-						break
-					}
+		for _, availableGpu := range availableGpus {
+			if availableGpu >= reqGpuMem {
+				if reqGpuNum -= 1; reqGpuNum <= 0 {
+					allocatable = true
+					break
 				}
 			}
 		}
@@ -254,27 +252,29 @@ func (n *GpuNodeInfo) AllocateGpuId(pod *v1.Pod) (candDevId string, found bool) 
 
 	if reqGpuNum == 1 { // 1-GPU pod. Adopt the original naive packing logic
 		var candGpuMem int64
-		for devId := 0; devId < len(n.devs); devId++ {
-			if idleGpuMem, ok := availableGpus[devId]; ok {
-				if idleGpuMem >= reqGpuMem {
-					if candDevId == "" || idleGpuMem < candGpuMem {
-						candDevId = strconv.Itoa(devId)
-						candGpuMem = idleGpuMem // update to the tightest fit
-						found = true
-					}
+		for devId, idleGpuMem := range availableGpus {
+			if idleGpuMem >= reqGpuMem {
+				if candDevId == "" || idleGpuMem < candGpuMem {
+					candDevId = strconv.Itoa(devId)
+					candGpuMem = idleGpuMem // update to the tightest fit
+					found = true
 				}
 			}
 		}
 	} else { // multi-GPU pod. Greedy algorithm. Trying to pack as many containers onto 1 GPU as possible.
 		var candDevIdList []int
-		devId, reqGpuId := 0, 0
-		for devId < len(n.devs) && reqGpuId < int(reqGpuNum) { // two pointers
-			if idleGpuMem, ok := availableGpus[devId]; ok && idleGpuMem >= reqGpuMem {
+		var reqGpuId = 0
+		for devId, idleGpuMem := range availableGpus {
+			for idleGpuMem >= reqGpuMem {
 				candDevIdList = append(candDevIdList, devId)
-				availableGpus[devId] = idleGpuMem - reqGpuMem
+				idleGpuMem -= reqGpuMem
 				reqGpuId++
-			} else {
-				devId++
+				if int64(reqGpuId) >= reqGpuNum {
+					break
+				}
+			}
+			if int64(reqGpuId) >= reqGpuNum {
+				break
 			}
 		}
 		if reqGpuId == int(reqGpuNum) {
